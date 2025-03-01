@@ -1,0 +1,4 @@
+TWILIO_ACCOUNT_SID = 'inserisci_il_tuo_SID'
+TWILIO_AUTH_TOKEN = 'inserisci_il_tuo_AUTH_TOKEN'
+TWILIO_PHONE_NUMBER = '+1 775 383 7076'
+OPENAI_API_KEY = 'inserisci_la_tua_API_KEY'
