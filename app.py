@@ -1,12 +1,15 @@
+import os
 from flask import Flask, request, jsonify, render_template
 from twilio.twiml.voice_response import VoiceResponse
 import openai
-import os
 import requests
 from google.cloud import texttospeech, speech_v1p1beta1 as speech
 from config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, OPENAI_API_KEY
 
-# Configura le credenziali Google (Render le prende dall'env)
+# Log subito per vedere se parte
+print(">>> Cartomante AI sta partendo...")
+
+# Configura le credenziali Google
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google-credentials.json"
 
 # Configura OpenAI
@@ -30,19 +33,12 @@ def process_voice():
     recording_url = request.form['RecordingUrl']
     audio_file = 'question.wav'
     
-    # Scarica il file audio registrato da Twilio
     download_audio(recording_url, audio_file)
-    
-    # Trascrivi l'audio usando Google Speech-to-Text
     question = transcribe_audio(audio_file)
-
-    # Ottieni la risposta dalla cartomante AI
     response_text = get_cartomante_response(question)
 
-    # Convertilo in audio con Google Text-to-Speech
     generate_response_audio(response_text, 'response.mp3')
 
-    # Rispondi via Twilio
     response = VoiceResponse()
     response.play('/static/response.mp3')
     return str(response)
@@ -85,6 +81,6 @@ def generate_response_audio(text, output_file):
         out.write(response.audio_content)
 
 if __name__ == '__main__':
+    print(">>> Avvio in corso sulla porta:", os.environ.get("PORT"))
     from waitress import serve
-    port = int(os.environ.get("PORT", 10000))
-    serve(app, host='0.0.0.0', port=port)
+    serve(app, host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
