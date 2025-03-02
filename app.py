@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask import Flask, request, render_template
 from twilio.twiml.voice_response import VoiceResponse
 import openai
 import requests
@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', phone_number=TWILIO_PHONE_NUMBER)
 
 @app.route('/voice', methods=['POST'])
 def voice():
@@ -76,7 +76,6 @@ def generate_response_audio(text, output_file):
     with open(f'static/{output_file}', 'wb') as out:
         out.write(response.audio_content)
 
-# Questa è la parte fondamentale per Render
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 10000))  # Legge la porta da Render, fallback a 10000 in locale
+    port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
