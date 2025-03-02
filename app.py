@@ -5,11 +5,9 @@ import os
 from google.cloud import texttospeech, speech_v1p1beta1 as speech
 from config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, OPENAI_API_KEY
 
-# Configura chiave Google Cloud da ENV (non hard-coded nel file)
-google_credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "google-credentials.json")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_credentials_path
+# Carica le credenziali di Google Cloud
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google-credentials.json"
 
-# Configura OpenAI
 openai.api_key = OPENAI_API_KEY
 
 app = Flask(__name__)
@@ -34,4 +32,5 @@ def process_voice():
     return str(response)
 
 if __name__ == '__main__':
-    pass  # Non serve il run qui, lo gestisce Gunicorn
+    from waitress import serve
+    serve(app, host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
