@@ -6,9 +6,19 @@ import requests
 from google.cloud import texttospeech, speech_v1p1beta1 as speech
 from config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, OPENAI_API_KEY
 
+# Diagnostica immediata all'avvio (così controlli su Render)
 print(">>> Cartomante AI sta partendo...")
+print("=== DIAGNOSTICA VARIABILI DI AMBIENTE ===")
+print("TWILIO_ACCOUNT_SID:", os.getenv('TWILIO_ACCOUNT_SID', 'NON TROVATA'))
+print("TWILIO_AUTH_TOKEN:", os.getenv('TWILIO_AUTH_TOKEN', 'NON TROVATA'))
+print("TWILIO_PHONE_NUMBER:", os.getenv('TWILIO_PHONE_NUMBER', 'NON TROVATO'))
+print("OPENAI_API_KEY:", os.getenv('OPENAI_API_KEY', 'NON TROVATA')[:5] + "*****")
+print("=========================================")
 
+# Configurazione credenziali Google Cloud
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google-credentials.json"
+
+# Configurazione chiave OpenAI
 openai.api_key = OPENAI_API_KEY
 
 app = Flask(__name__)
