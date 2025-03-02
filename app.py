@@ -77,7 +77,9 @@ def generate_response_audio(text, output_file):
     with open(f'static/{output_file}', 'wb') as out:
         out.write(response.audio_content)
 
+import os
+
 if __name__ == '__main__':
-    print(">>> Avvio in corso sulla porta:", os.environ.get("PORT"))
-    from waitress import serve
-    serve(app, host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
+    port = int(os.environ.get('PORT', 10000))  # Se PORT non c'è, usa 10000 (solo in locale)
+    app.run(host='0.0.0.0', port=port)
+
