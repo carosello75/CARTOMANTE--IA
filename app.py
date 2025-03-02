@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from twilio.twiml.voice_response import VoiceResponse
 import openai
 import requests
@@ -9,7 +9,6 @@ from config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, O
 print(">>> Cartomante AI sta partendo...")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google-credentials.json"
-
 openai.api_key = OPENAI_API_KEY
 
 app = Flask(__name__)
@@ -77,9 +76,7 @@ def generate_response_audio(text, output_file):
     with open(f'static/{output_file}', 'wb') as out:
         out.write(response.audio_content)
 
-import os
-
+# Questa è la parte fondamentale per Render
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 10000))  # Se PORT non c'è, usa 10000 (solo in locale)
+    port = int(os.environ.get('PORT', 10000))  # Legge la porta da Render, fallback a 10000 in locale
     app.run(host='0.0.0.0', port=port)
-
