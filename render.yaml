@@ -3,7 +3,7 @@ services:
     name: cartomante-ai
     runtime: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "sh start.sh"
+    startCommand: "python app.py"
     envVars:
       - key: GOOGLE_APPLICATION_CREDENTIALS
         value: google-credentials.json
