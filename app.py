@@ -5,10 +5,10 @@ import os
 import json
 from google.cloud import texttospeech, speech_v1p1beta1 as speech
 
-# Carica le credenziali Google automaticamente
+# Carica le credenziali Google automaticamente (opzionale, dipende da come gestisci)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google-credentials.json"
 
-# Configurazioni (puoi spostarli nel tuo config.py)
+# Configurazioni dal file esterno
 from config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, OPENAI_API_KEY
 
 # Configura OpenAI
@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return "Cartomante AI è online!"
 
 @app.route('/voice', methods=['POST'])
 def voice():
@@ -36,7 +36,4 @@ def process_voice():
     return str(response)
 
 if __name__ == '__main__':
-    import os
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000)), debug=False)
-
+    pass  # In produzione non lo eseguiamo mai con app.run()!
