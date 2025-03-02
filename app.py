@@ -2,14 +2,12 @@ from flask import Flask, request, jsonify, render_template
 from twilio.twiml.voice_response import VoiceResponse
 import openai
 import os
-import json
 from google.cloud import texttospeech, speech_v1p1beta1 as speech
+from config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, OPENAI_API_KEY
 
-# Configurazioni (prende da env invece che da config.py diretto)
-TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
-TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
-TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+# Configura chiave Google Cloud da ENV (non hard-coded nel file)
+google_credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "google-credentials.json")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_credentials_path
 
 # Configura OpenAI
 openai.api_key = OPENAI_API_KEY
@@ -18,7 +16,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Cartomante AI è attiva!"
+    return render_template('index.html')
 
 @app.route('/voice', methods=['POST'])
 def voice():
@@ -36,5 +34,4 @@ def process_voice():
     return str(response)
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    pass  # Non serve il run qui, lo gestisce Gunicorn
