@@ -1,17 +1,8 @@
 services:
-  - type: web
-    name: cartomante-ai
-    runtime: python
+  - name: cartomante-ai
+    env: python
     buildCommand: "pip install -r requirements.txt"
     startCommand: "python app.py"
     envVars:
       - key: GOOGLE_APPLICATION_CREDENTIALS
-        value: google-credentials.json
-      - key: TWILIO_ACCOUNT_SID
-        sync: false
-      - key: TWILIO_AUTH_TOKEN
-        sync: false
-      - key: TWILIO_PHONE_NUMBER
-        sync: false
-      - key: OPENAI_API_KEY
-        sync: false
+        value: "google-credentials.json"
